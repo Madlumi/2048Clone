@@ -1,8 +1,10 @@
 package net.game;
 
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.Random;
 
-public class Main {
+public class Main implements KeyListener{
 	
 	//a 2048 game:
 	/*needed
@@ -15,7 +17,7 @@ public class Main {
 	private static int map[];
 	private static Random R;
 	private static int tileGenMax=2;
-	
+	public static boolean legal[]= new boolean[4];
 	
 	public static void init(int mapSize) {
 		score=0;
@@ -26,6 +28,7 @@ public class Main {
 		newTile();
 		newTile();
 	}
+	
 	
 	
 	
@@ -42,6 +45,33 @@ public class Main {
 	}
 	
 	
+	public static boolean getLegal(){
+		
+		return false;
+	}
+	
+	
+	public static void main(String args[]) {
+		R=new Random();
+		init(4);
+		printMap();
+		//main loop:
+			if(getLegal()) {
+				getInput();
+				//add score
+			}else {
+				//lose		
+			}
+	
+	}
+	
+	
+	
+	
+
+
+
+
 	private static void printMap() {
 		int w = (int)Math.sqrt((map.length+1));
 		System.out.println("------------------");
@@ -58,21 +88,35 @@ public class Main {
 		}
 		System.out.println("------------------");
 	}
+
+
+
 	
 	
-	public static void main(String args[]) {
-		System.out.println("hello world");
-		R=new Random();
-		init(4);
-		printMap();
-		System.out.println("hello world");
-		//set score 0
-		//generate tile 1 and 2
-		//main loop:
-		//	check legal moves:
-		//		allow move
-		//		lose
-		//	move,combine
-		//	add score
+	public static boolean[] keys = new boolean [600];
+	private static void getInput() {
+		legal[0] = keys[KeyEvent.VK_UP];
+		legal[1] = keys[KeyEvent.VK_RIGHT];
+		legal[2] = keys[KeyEvent.VK_DOWN];
+		legal[3] = keys[KeyEvent.VK_LEFT];
 	}
+	
+	@Override
+	public void keyPressed(KeyEvent e) {
+		keys[e.getKeyCode()] = true;
+		
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+		keys[e.getKeyCode()] = false;
+		
+	}
+
+	@Override
+	public void keyTyped(KeyEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+	
 }
