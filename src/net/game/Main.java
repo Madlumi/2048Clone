@@ -53,8 +53,10 @@ public class Main {
 		
 		for(int x = 0; x < w; x++) {
 			for(int y = 0; y < w; y++) {
-				if(y>1)		if(map[x+(y-1)*w]==0||map[x+(y-1)*w]==map[x+y*w])legal[0]=true;
-				if(y<w-1)	if(map[x+(y+1)*w]==0||map[x+(y-1)*w]==map[x+y*w])legal[0]=true;
+				if(y>=1)		if(map[x+(y-1)*w]==0||map[x+(y-1)*w]==map[x+y*w])legal[0]=true;
+				if(y<w-1)	if(map[x+(y+1)*w]==0||map[x+(y-1)*w]==map[x+y*w])legal[2]=true;
+				if(x>=1)		if(map[x-1+(y)*w]==0||map[x+(y-1)*w]==map[x+y*w])legal[3]=true;
+				if(x<w-1)	if(map[x+1+(y)*w]==0||map[x+(y-1)*w]==map[x+y*w])legal[1]=true;
 			}
 		}
 		
@@ -69,17 +71,17 @@ public class Main {
 		init(4);
 		//print the map
 		printMap();
-		//main loop:
+		while(true)
 			if(getLegal()) {
 				int inkey=-1;
 				while(inkey==-1){
 					inkey=KeyList.getInput();
 					if(!legal[inkey])inkey=-1;
 				}
-				//move	
-				//add score
+				score+=move(inkey);	
 			}else {
-				//lose		
+				System.out.println("lost: "+score);
+				break;
 			}
 	
 	}
@@ -87,6 +89,38 @@ public class Main {
 	
 	
 	
+
+
+
+
+	private static int move(int dir) {
+		int addScore=0;
+		//start from dir
+		int temp=0;
+		
+		int addy=0;
+		int addx=0;
+		int w = (int)Math.sqrt((map.length+1));
+		for(int x = 0; x < w; x++) {
+			for(int y = 0; y < w; y++) {
+				int xx=x;
+				int yy=y;
+				if(xx+addx+(yy+addy)*w>0&&xx+addx+(yy+addy)*w<map.length) {
+					if(map[xx+addx+(yy+addy)*w]==0||map[xx+addx+(yy+addy)*w]==map[xx+(yy)*w]) {
+						temp = map[xx+(yy)*w];
+						map[xx+(yy)*w]=temp;
+					}else if(temp>0){
+						map[xx+(yy)*w]+=temp;
+						addScore+=map[xx+(yy)*w];
+					}
+				}
+				
+				
+				
+			}
+		}
+		return 0;
+	}
 
 
 
