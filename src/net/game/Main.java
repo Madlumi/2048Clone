@@ -1,10 +1,8 @@
 package net.game;
 
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.util.Random;
 
-public class Main implements KeyListener{
+public class Main {
 	
 	//a 2048 game:
 	/*needed
@@ -47,17 +45,38 @@ public class Main implements KeyListener{
 	
 	public static boolean getLegal(){
 		
+		int w = (int)Math.sqrt((map.length+1));
+		legal[0]=false;
+		legal[1]=false;
+		legal[2]=false;
+		legal[3]=false;
+		
+		for(int x = 0; x < w; x++) {
+			for(int y = 0; y < w; y++) {
+				if(y>1)		if(map[x+(y-1)*w]==0||map[x+(y-1)*w]==map[x+y*w])legal[0]=true;
+				if(y<w-1)	if(map[x+(y+1)*w]==0||map[x+(y-1)*w]==map[x+y*w])legal[0]=true;
+			}
+		}
+		
+		
 		return false;
 	}
 	
 	
 	public static void main(String args[]) {
 		R=new Random();
+		//initialize map
 		init(4);
+		//print the map
 		printMap();
 		//main loop:
 			if(getLegal()) {
-				getInput();
+				int inkey=-1;
+				while(inkey==-1){
+					inkey=KeyList.getInput();
+					if(!legal[inkey])inkey=-1;
+				}
+				//move	
 				//add score
 			}else {
 				//lose		
@@ -93,30 +112,6 @@ public class Main implements KeyListener{
 
 	
 	
-	public static boolean[] keys = new boolean [600];
-	private static void getInput() {
-		legal[0] = keys[KeyEvent.VK_UP];
-		legal[1] = keys[KeyEvent.VK_RIGHT];
-		legal[2] = keys[KeyEvent.VK_DOWN];
-		legal[3] = keys[KeyEvent.VK_LEFT];
-	}
 	
-	@Override
-	public void keyPressed(KeyEvent e) {
-		keys[e.getKeyCode()] = true;
-		
-	}
-
-	@Override
-	public void keyReleased(KeyEvent e) {
-		keys[e.getKeyCode()] = false;
-		
-	}
-
-	@Override
-	public void keyTyped(KeyEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
 	
 }
